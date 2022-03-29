@@ -58,7 +58,14 @@ function reducer(state, { type, payload }) {
     case ACTIONS.INSERT_COIN:
       return { ...state }
     case ACTIONS.DELETE_ITEM_FROM_LIST:
-      return { ...state }
+      // uses the UUID of the list item to filter it out
+      console.log(`ID: ${payload.itemId}; UUID: ${payload.uuid}.`)
+      var newState = produce(state, draftState => {
+        draftState.purchasedItems = draftState.purchasedItems.filter(purchasedItem =>
+          purchasedItem.uuid !== payload.uuid
+        );
+      })
+      return newState;
     case ACTIONS.RELOAD:
       // reloads the current coins in the machine and item selection
       // doesn't touch the purchased items list or stock levels
