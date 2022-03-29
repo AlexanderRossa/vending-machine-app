@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/vending-machine-app/static/css/main.884f8f0a.css",
-    "main.js": "/vending-machine-app/static/js/main.8d4c397a.js",
+    "main.js": "/vending-machine-app/static/js/main.fe03d914.js",
     "index.html": "/vending-machine-app/index.html",
     "main.884f8f0a.css.map": "/vending-machine-app/static/css/main.884f8f0a.css.map",
-    "main.8d4c397a.js.map": "/vending-machine-app/static/js/main.8d4c397a.js.map"
+    "main.fe03d914.js.map": "/vending-machine-app/static/js/main.fe03d914.js.map"
   },
   "entrypoints": [
     "static/css/main.884f8f0a.css",
-    "static/js/main.8d4c397a.js"
+    "static/js/main.fe03d914.js"
   ]
 }
