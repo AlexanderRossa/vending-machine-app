@@ -1,5 +1,6 @@
 import './App.css';
 import _ from "lodash";
+import produce from "immer";
 
 import { useReducer } from "react"
 import { v4 as uuidv4 } from 'uuid';
@@ -15,7 +16,7 @@ export function formatCurrency(number) {
     return
   } else {
     return `${CURRENCY_SYMBOL}${number}`
-  } 
+  }
 }
 
 // defining some global values to populate the vending machine with and use as a strating point
@@ -59,9 +60,17 @@ function reducer(state, { type, payload }) {
     case ACTIONS.DELETE_ITEM_FROM_LIST:
       return { ...state }
     case ACTIONS.RELOAD:
-      return { ...state }
+      // reloads the current coins in the machine and item selection
+      // doesn't touch the purchased items list or stock levels
+      return {
+        ...state,
+        selectedItemId: 0,
+        currentCoins: 0,
+        warningDisplay: ""
+      };
     case ACTIONS.RESET:
-      return { ...state }
+      // full reset to the initial state
+      return _.cloneDeep(initialState);
     default:
       return state;
   }
