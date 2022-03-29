@@ -90,7 +90,7 @@ function reducer(state, { type, payload }) {
         // otherwise just select the item and reset the warning
         return {
           ...state,
-          warningMessage: "",
+          warningMessage: `NOT ENOUGH COINS TO BUY ${state.items[payload.itemId].name}`,
           selectedItemId: payload.itemId
         };
       } else {
