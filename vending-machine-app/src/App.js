@@ -49,21 +49,51 @@ export const ACTIONS = {
   "RESET": "reset",
 }
 
+// used to keep floating point numbers from going crazy after operations
+function normalizeNumber(number) {
+  return _.round(number, 2)
+}
+
 // the main state changing logic of the app
 function reducer(state, { type, payload }) {
   console.log(`Type: ${type}.`)
   switch (type) {
     case ACTIONS.SELECT_ITEM:
+      console.log(`ID: ${payload.itemId}; Name: ${state.items[payload.itemId].name}; Stock: ${state.items[payload.itemId].stock}`)
+      // check item in stock
+        // if current coins >= item price --> purchase
+        // else change selected item (and reset warning)
+      // warn that item not in stock
       return { ...state }
     case ACTIONS.INSERT_COIN:
-      return { ...state }
+      console.log(`Value: ${payload.value}.`)
+      console.log(`Coins: ${state.currentCoins}.`)
+
+      // new coins value after adding inserted coins
+      const newCoins = normalizeNumber(state.currentCoins + payload.value)
+      console.log(`New coins: ${newCoins}`)
+
+      // if item is selected already check if we can to purchase
+      if (state.selectedItemId) {
+        if (newCoins >= state.items[state.selectedItemId].price) {
+          // add code for purchasing items
+          return { ...state } // return this for now, TODO: delete
+        }
+      }
+      // otherwise just add the coins to the existing coins
+      return {
+        ...state,
+        currentCoins: newCoins
+      }
     case ACTIONS.DELETE_ITEM_FROM_LIST:
       // uses the UUID of the list item to filter it out
+      // also increases the stock of the given item by 1 - mimics "returning" it to the machine
       console.log(`ID: ${payload.itemId}; UUID: ${payload.uuid}.`)
       var newState = produce(state, draftState => {
         draftState.purchasedItems = draftState.purchasedItems.filter(purchasedItem =>
           purchasedItem.uuid !== payload.uuid
         );
+        draftState.items[payload.itemId].stock += 1;
       })
       return newState;
     case ACTIONS.RELOAD:
