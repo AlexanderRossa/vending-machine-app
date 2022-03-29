@@ -54,32 +54,52 @@ function normalizeNumber(number) {
   return _.round(number, 2)
 }
 
+function purchaseItem(state, coins, itemId) {
+  console.log(`Purchasing: ${state.items[itemId].name}`);
+  // on purchase we want to:
+  var newState = produce(state, draftState => {
+    // add item to the purchased items list
+    draftState.purchasedItems = [
+      ...draftState.purchasedItems,
+      { "uuid": uuidv4(), "itemId": itemId }
+    ];
+    // decrease its stock
+    draftState.items[itemId].stock -= 1;
+    // recalculate the coins left after purchase
+    draftState.currentCoins = normalizeNumber(coins - state.items[itemId].price);
+    // deselect item and clear the warning 
+    draftState.selectedItemId = 0;
+    draftState.warningMessage = "";
+  })
+  return newState;
+}
+
 // the main state changing logic of the app
 function reducer(state, { type, payload }) {
   console.log(`Type: ${type}.`)
   switch (type) {
     case ACTIONS.SELECT_ITEM:
-      console.log(`ID: ${payload.itemId}; Name: ${state.items[payload.itemId].name}; Stock: ${state.items[payload.itemId].stock}`);
+      console.log(`ID: ${payload.itemId}; Name: ${state.items[payload.itemId].name};`)
+      console.log(`Stock: ${state.items[payload.itemId].stock}`);
       // if item in stock
       if (state.items[payload.itemId].stock > 0) {
         // if we have enough coins to purchase selected item do it right away
         if (state.currentCoins >= state.items[payload.itemId].price) {
-          // add code for purchasing
-          return { ...state };
+          return purchaseItem(state, state.currentCoins, payload.itemId);
         }
         // otherwise just select the item and reset the warning
         return {
           ...state,
-          warningDisplay: "",
+          warningMessage: "",
           selectedItemId: payload.itemId
         };
       } else {
         // item not in stock, reset selector and display warning
-        console.log("Item out of stock!")
+        console.log("Item out of stock!");
         return {
           ...state,
           selectedItemId: 0,
-          warningDisplay: `ITEM '${state.items[payload.itemId].name}' IS NOT IN STOCK!`
+          warningMessage: `ITEM '${state.items[payload.itemId].name}' IS NOT IN STOCK!`
         };
       }
     case ACTIONS.INSERT_COIN:
@@ -90,11 +110,10 @@ function reducer(state, { type, payload }) {
       const newCoins = normalizeNumber(state.currentCoins + payload.value);
       console.log(`New coins: ${newCoins}`);
 
-      // if item is selected already check if we can to purchase
+      // if item is selected already check if we can purchase it with current coins
       if (state.selectedItemId) {
         if (newCoins >= state.items[state.selectedItemId].price) {
-          // add code for purchasing items
-          return { ...state } // return this for now, TODO: delete
+          return purchaseItem(state, newCoins, state.selectedItemId);
         }
       }
       // otherwise just add the coins to the existing coins
@@ -104,7 +123,7 @@ function reducer(state, { type, payload }) {
       };
     case ACTIONS.DELETE_ITEM_FROM_LIST:
       // uses the UUID of the list item to filter it out
-      // also increases the stock of the given item by 1 - mimics "returning" it to the machine
+      // also increases the stock of the given item - mimics "returning" it to the machine
       console.log(`ID: ${payload.itemId}; UUID: ${payload.uuid}.`)
       var newState = produce(state, draftState => {
         draftState.purchasedItems = draftState.purchasedItems.filter(purchasedItem =>
@@ -120,7 +139,7 @@ function reducer(state, { type, payload }) {
         ...state,
         selectedItemId: 0,
         currentCoins: 0,
-        warningDisplay: ""
+        warningMessage: ""
       };
     case ACTIONS.RESET:
       // full reset to the initial state
@@ -137,7 +156,7 @@ const initialState = {
   items: _.cloneDeep(ITEMS),
   selectedItemId: 0,
   currentCoins: 0,
-  warningDisplay: ""
+  warningMessage: ""
 }
 
 function App() {
@@ -149,7 +168,7 @@ function App() {
         <div className="display">
           <div className="coins-output">COINS: {formatCurrency(state.currentCoins)}</div>
           <div className="items-output">ITEM: {state.items[state["selectedItemId"]]?.name}</div>
-          <div className="warning-output">{state.warningDisplay}</div>
+          <div className="warning-output">{state.warningMessage}</div>
         </div>
         {
           Object.entries(state.items).map(([id, item]) => {

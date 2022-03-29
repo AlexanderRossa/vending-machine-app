@@ -39,6 +39,8 @@
     ]
   },
   "devDependencies": {
-    "gh-pages": "^3.2.3"
+    "gh-pages": "^3.2.3",
+    "immer": "^9.0.12",
+    "lodash": "^4.17.21"
   }
 }
