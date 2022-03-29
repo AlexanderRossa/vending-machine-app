@@ -1,0 +1,185 @@
+@import url('https://fonts.googleapis.com/css?family=Josefin+Sans');
+
+*, *::before, *::after, html, body {
+  box-sizing: border-box;
+}
+
+html {
+  --text-background-dark-primary: rgba(0, 0, 0, 0.85);
+  --text-background-dark-secondary: rgba(0, 0, 0, 1);
+  --coin-color-primary: rgba(255, 215, 0, 1);
+  --coin-color-secondary: rgba(255, 215, 0, .75);
+  --button-primary: rgb(233, 248, 252);
+  --button-secondary: rgb(211, 223, 226);
+  --reset-button-primary: rgba(255, 40, 40, 0.75);
+  --reset-button-secondary: rgba(255, 40, 40, 0.65);
+  --text-color-light: rgba(240, 240, 240, 1);
+  --text-color-dark: rgba(15, 15, 15, 1);
+}
+
+body {
+  margin: 0;
+  background-image: linear-gradient(to right, #cdedf6, #ebf8fb);
+  font-family: 'Josefin Sans';
+  font-weight: 700;
+}
+
+button {
+  font-family: 'Josefin Sans';
+  font-weight: 700;
+  border: none;
+  outline: none;
+  cursor: pointer;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+}
+
+.items-grid {
+  display: grid;
+  margin-top: 2rem;
+  justify-content: center;
+  grid-template-columns: repeat(4, auto);
+  grid-template-rows: minmax(8rem, auto) repeat(3, auto);
+}
+
+.display {
+  grid-column: 1 / -1;
+  color: white;
+  background-color: var(--text-background-dark-primary);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: flex-start;
+  padding: 1rem;
+  font-size: 1.1rem;
+}
+
+.coins-output {
+  color: var(--coin-color-primary);
+  font-size: 0.85rem;
+}
+
+.warning-output {
+  color: var(--reset-button-primary);
+  font-size: 0.85rem;
+}
+
+.item {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.item-button {
+  font-size: 1.5rem;
+  background-color: var(--button-primary);
+  padding: 1rem;
+}
+
+.item-button:hover {
+  background-color: var(--button-secondary)
+}
+
+.item-stock {
+  color: var(--text-color-dark);
+  font-size: 1rem;
+  margin: 0.75rem;
+}
+
+.item-price {
+  font-size: 1rem;
+}
+
+.reload-button {
+  font-size: 1.25rem;
+  background-color: var(--reset-button-primary);
+}
+
+.reload-button:hover {
+  background-color: var(--reset-button-secondary);
+}
+
+.coins-row {
+  display: flex;
+  justify-content: center;
+  font-weight: 900;
+}
+
+.coins-row>button {
+  min-width: 3rem;
+  margin: 0.5rem;
+  padding: 0.25rem;
+  cursor: pointer;
+  border: none;
+  font-size: 1rem;
+  outline: none;
+  background-color: var(--coin-color-primary)
+}
+
+.coins-row>button:hover {
+  background-color: var(--coin-color-secondary)
+}
+
+.purchased-items-list {
+  padding: 1rem;
+  display: flex;
+  width: 30rem;
+  margin: auto;
+  flex-direction: column;
+  align-items: stretch;
+  background-color: var(--text-background-dark-primary);
+  color: var(--text-color-light)
+}
+
+.purchased-item {
+  padding: 0 1rem 0 1rem;
+  margin-bottom: 0.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--text-background-dark-secondary);
+  border: 1px solid black;
+}
+
+.purchased-item-price {
+  color: var(--coin-color-primary)
+}
+
+.delete-button {
+  background-color: var(--reset-button-primary);
+  padding: 0.5rem;
+}
+
+.delete-button:hover {
+  background-color: var(--reset-button-secondary);
+}
+
+.control-buttons {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: center;
+}
+
+.control-buttons>button {
+  margin: 1rem;
+}
+
+.reset-button-row {
+  display: flex;
+  justify-content: center;
+}
+
+.reset-button {
+  align-items: center;
+  margin-top: 1rem;
+  font-size: 1.25rem;
+  padding: 0.5rem;
+  background-color: var(--reset-button-primary);
+}
+
+.reset-button:hover {
+  background-color: var(--reset-button-secondary);
+}
