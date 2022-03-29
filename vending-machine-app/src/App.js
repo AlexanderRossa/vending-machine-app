@@ -8,8 +8,18 @@ import Item from "./Item";
 import Coin from "./Coin";
 import PurchasedItem from "./PurchasedItem"
 
-const COINS = [0.01, 0.05, 0.1, 0.25, 0.5, 1]
+// helper for formatting currencies everywhere
+const CURRENCY_SYMBOL = "$"
+export function formatCurrency(number) {
+  if (number == null) {
+    return
+  } else {
+    return `${CURRENCY_SYMBOL}${number}`
+  } 
+}
 
+// defining some global values to populate the vending machine with and use as a strating point
+const COINS = [0.01, 0.05, 0.1, 0.25, 0.5, 1]
 const ITEMS = {
   "1": { "name": "Coca", "price": 1.35, "stock": 3 },
   "2": { "name": "Cola", "price": 0.75, "stock": 2 },
@@ -23,13 +33,13 @@ const ITEMS = {
   "10": { "name": "Else", "price": 0.55, "stock": 20 },
   "11": { "name": "Entirely", "price": 0.51, "stock": 1 },
 }
-
 const PURCHASED_ITEMS_DEFAULT = [
   { "uuid": uuidv4(), "itemId": 1 },
   { "uuid": uuidv4(), "itemId": 1 },
   { "uuid": uuidv4(), "itemId": 2 }
 ]
 
+// the actions that are possible in the app - handled by reducer
 export const ACTIONS = {
   "SELECT_ITEM": "select-item",
   "INSERT_COIN": "insert-coin",
@@ -38,6 +48,7 @@ export const ACTIONS = {
   "RESET": "reset",
 }
 
+// the main state changing logic of the app
 function reducer(state, { type, payload }) {
   console.log(`Type: ${type}.`)
   switch (type) {
@@ -56,6 +67,8 @@ function reducer(state, { type, payload }) {
   }
 }
 
+// initial values for components
+// doing a deep clone on ITEMS to prevent issues with mutability
 const initialState = {
   purchasedItems: [...PURCHASED_ITEMS_DEFAULT],
   items: _.cloneDeep(ITEMS),
@@ -71,7 +84,7 @@ function App() {
     <div className="container">
       <div className="items-grid">
         <div className="display">
-          <div className="coins-output">COINS: {state.currentCoins}</div>
+          <div className="coins-output">COINS: {formatCurrency(state.currentCoins)}</div>
           <div className="items-output">ITEM: {state.items[state["selectedItemId"]]?.name}</div>
           <div className="warning-output">{state.warningDisplay}</div>
         </div>
